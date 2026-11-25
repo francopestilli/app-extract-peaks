@@ -2,6 +2,51 @@
 [![Run on Brainlife.io](https://img.shields.io/badge/Brainlife-bl.app.172-blue.svg)](https://doi.org/10.25663/brainlife.app.172)
 
 # app-extract-peaks
+
+<!-- brainlife-app:begin (generated from the App manifest; edit the manifest, not this block) -->
+
+> **Computes fibre orientation distributions from DWI with MRtrix3 constrained spherical deconvolution (CSD, multi-shell or 5TT) and extracts the peaks with sh2peaks, using TractSeg's code.**
+
+Uses TractSeg's MRtrix wrapper to estimate the response function and FODs with the selected CSD type, then extracts the FOD peaks at each voxel with sh2peaks; the peaks image is the input expected by TractSeg. A brain mask is computed from the T1w with FSL bet when none is given. The T1w must be skull-stripped and aligned with the DWI; multi-shell DWI is needed for the msmt options.
+
+| | |
+|---|---|
+| 📥 **Inputs** | `neuro/dwi` · `neuro/anat/t1w` · `neuro/mask` (optional) |
+| 📤 **Outputs** | `neuro/peaks` |
+| 🐳 **Container** | `giuliaberto/extract-peaks:1.1` |
+| ⚙️ **Resources** | 16 CPUs · 10 h walltime |
+| 🔗 **Run it** | [doi.org/10.25663/brainlife.app.172](https://doi.org/10.25663/brainlife.app.172) |
+
+#### 📥 Inputs
+
+| Input | Datatype | Required | Description |
+|---|---|---|---|
+| `0` | `neuro/dwi` | yes | Dwi raw data |
+| `1` | `neuro/anat/t1w` | yes | T1w image. It should be aligned with the dwi data and all non-brain tissue should be removed. |
+| `2` | `neuro/mask` | no | Brain mask. It should be aligned with the dwi data. If not provided, the BET algorithm will be used for brain extraction. |
+
+#### 📤 Outputs
+
+| Output | Datatype | Description |
+|---|---|---|
+| `output` | `neuro/peaks` | CSD peaks |
+
+<details>
+<summary><b>⚙️ Parameters</b> (1)</summary>
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `csd` | enum |  | CSD type Options: `csd_msmt_5tt`, `csd_msmt`, `csd`. |
+
+</details>
+
+📚 **References used by this App:**
+- Tournier J-D, Calamante F, Connelly A. MRtrix: Diffusion tractography in crossing fiber regions. Int J Imaging Syst Technol 22:53-66 (2012). [doi:10.1002/ima.22005](https://doi.org/10.1002/ima.22005)
+- Wasserthal J, Neher P, Maier-Hein KH. TractSeg - Fast and accurate white matter tract segmentation. NeuroImage (2018). [doi:10.1016/j.neuroimage.2018.07.070](https://doi.org/10.1016/j.neuroimage.2018.07.070)
+- Avesani P, McPherson B, Hayashi S, et al. The open diffusion data derivatives, brain data upcycling via integrated publishing of derivatives and reproducible open cloud services. Sci Data 6, 69 (2019). [doi:10.1038/s41597-019-0073-y](https://doi.org/10.1038/s41597-019-0073-y)
+
+<!-- brainlife-app:end -->
+
 This App extracts the peaks of a spherical harmonic function at each voxel using the MRtrix command `sh2peaks`. This code is part of the TractSeg package developed by (Wasserthal et al., 2018), under Apache-2.0 License: https://github.com/MIC-DKFZ/TractSeg.
 
 ### Authors
